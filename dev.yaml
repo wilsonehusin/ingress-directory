@@ -1,0 +1,82 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ingress-directory
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations:
+    kubernetes.io/description: |-
+      Allow listing ingress objects across all namespaces.
+  name: ingress-directory
+rules:
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ingress-directory
+subjects:
+  - kind: ServiceAccount
+    name: ingress-directory
+    namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ingress-directory
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingress-directory
+  labels:
+    app.kubernetes.io/name: ingress-directory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingress-directory
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ingress-directory
+    spec:
+      serviceAccountName: ingress-directory
+      containers:
+        - name: ingress-directory
+          image: ko.local/ingress-directory:fe93bbf7e5de34a16d901bab4dc7b2296ee5e4acb47337ebaf1239935418f067
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-directory
+spec:
+  selector:
+    app.kubernetes.io/name: ingress-directory
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-directory
+spec:
+  rules:
+    - host: 'localhost'
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ingress-directory
+                port:
+                  number: 80
