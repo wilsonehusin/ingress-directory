@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	_ "embed"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -14,6 +15,9 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 )
+
+//go:embed index.html
+var htmlPage []byte
 
 func main() {
 	if err := run(); err != nil {
@@ -42,6 +46,12 @@ func run() error {
 
 	var wg sync.WaitGroup
 	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		_, err := w.Write(htmlPage)
+		if err != nil {
+			log.Printf("error: serving html: %v", err)
+		}
+	})
 	mux.HandleFunc("/api", func(w http.ResponseWriter, req *http.Request) {
 		if err := json.NewEncoder(w).Encode(id); err != nil {
 			log.Printf("error: generating json: %v", err)

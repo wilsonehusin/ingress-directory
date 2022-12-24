@@ -48,7 +48,7 @@ spec:
       serviceAccountName: ingress-directory
       containers:
         - name: ingress-directory
-          image: ko.local/ingress-directory:fe93bbf7e5de34a16d901bab4dc7b2296ee5e4acb47337ebaf1239935418f067
+          image: ko://go.husin.dev/ingress-directory
           ports:
             - containerPort: 8080
 ---
