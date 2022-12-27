@@ -19,7 +19,7 @@ programs:
       base: tailwindlabs/tailwindcss
       target: "{{.Name}}-{{.OS}}-{{.Arch}}"
       checksums:
-        artifact: "https://checksums.bindl.dev/tailwindcss/v{{ .Version }}.txt"
+        artifact: "https://checksums.bindl.dev/tailwindcss/v{{.Version}}.txt"
   - name: ko
     version: 0.12.0
     provider: github
@@ -31,6 +31,14 @@ programs:
         amd64: x86_64
     paths:
       base: ko-build/ko
-      target: '{{ .Name }}_{{ .Version }}_{{ .OS }}_{{ .Arch }}.tar.gz'
+      target: "{{.Name}}_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
       checksums:
         artifact: checksums.txt
+  - name: helm
+    version: 3.10.3
+    provider: url
+    paths:
+      base: "https://get.helm.sh/"
+      target: "{{.Name}}-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+      checksums:
+        artifact: "{{.Name}}-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz.sha256sum"

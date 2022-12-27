@@ -1,5 +1,25 @@
 programs:
 - checksums:
+    helm-v3.10.3-darwin-amd64.tar.gz:
+      archive: 77a94ebd37eab4d14aceaf30a372348917830358430fcd7e09761eed69f08be5
+      binary: 8f422d213a9f3530fe516c8b69be74059d89b9954b1afadb9ae6dc81edb52615
+    helm-v3.10.3-darwin-arm64.tar.gz:
+      archive: 4f3490654349d6fee8d4055862efdaaf9422eca1ffd2a15393394fd948ae3377
+      binary: b5176d9b89ff43ac476983f58020ee2407ed0cbb5b785f928a57ff01d2c63754
+    helm-v3.10.3-linux-amd64.tar.gz:
+      archive: 950439759ece902157cf915b209b8d694e6f675eaab5099fb7894f30eeaee9a2
+      binary: cc5223b23fd2ccdf4c80eda0acac7a6a5c8cdb81c5b538240e85fe97aa5bc3fb
+    helm-v3.10.3-linux-arm64.tar.gz:
+      archive: 260cda5ff2ed5d01dd0fd6e7e09bc80126e00d8bdc55f3269d05129e32f6f99d
+      binary: 2b75e7112367ca237cd39408353dcfef9b81b1b5cf78e4826bdccb061dbb8dbd
+  name: helm
+  paths:
+    base: https://get.helm.sh/
+    checksums:
+      artifact: https://get.helm.sh/{{.Name}}-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz.sha256sum
+    target: '{{.Name}}-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz'
+  version: 3.10.3
+- checksums:
     ko_0.12.0_Darwin_arm64.tar.gz:
       archive: cfef98db8ad0e1edaa483fa5c6af89eb573a8434abd372b510b89005575de702
       binary: 58d9aafa583d3017401907e3d3e8995d76f1cbde2f92eb202e24136ac081254f
@@ -23,7 +43,7 @@ programs:
     base: https://github.com/ko-build/ko/releases/download/v{{ .Version }}/
     checksums:
       artifact: https://github.com/ko-build/ko/releases/download/v{{ .Version }}/checksums.txt
-    target: '{{ .Name }}_{{ .Version }}_{{ .OS }}_{{ .Arch }}.tar.gz'
+    target: '{{.Name}}_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz'
   version: 0.12.0
 - checksums:
     tailwindcss-linux-arm64:
@@ -47,6 +67,6 @@ programs:
   paths:
     base: https://github.com/tailwindlabs/tailwindcss/releases/download/v{{ .Version }}/
     checksums:
-      artifact: https://checksums.bindl.dev/tailwindcss/v{{ .Version }}.txt
+      artifact: https://checksums.bindl.dev/tailwindcss/v{{.Version}}.txt
     target: '{{.Name}}-{{.OS}}-{{.Arch}}'
   version: 3.2.4
