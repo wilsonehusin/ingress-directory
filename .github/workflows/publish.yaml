@@ -16,6 +16,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: imjasonh/setup-ko@v0.6
+        env:
+          # Required, otherwise the repo name will be included,
+          # resulting in duplication.
+          KO_DOCKER_REPO: ghcr.io/wilsonehusin
 
       - run: ko build --base-import-paths
         if: ${{ github.ref_type != 'tag' }}
