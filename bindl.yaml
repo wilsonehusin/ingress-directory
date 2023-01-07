@@ -1,0 +1,22 @@
+platforms:
+  linux:
+    - arm64
+    - amd64
+  darwin:
+    - arm64
+    - amd64
+
+programs:
+  - name: tailwindcss
+    version: 3.2.4
+    provider: github
+    overlay:
+      OS:
+        darwin: macos
+      Arch:
+        amd64: x64
+    paths:
+      base: tailwindlabs/tailwindcss
+      target: "{{.Name}}-{{.OS}}-{{.Arch}}"
+      checksums:
+        artifact: "https://checksums.bindl.dev/tailwindcss/v{{ .Version }}.txt"

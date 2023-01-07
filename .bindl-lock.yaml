@@ -1,0 +1,26 @@
+programs:
+- checksums:
+    tailwindcss-linux-arm64:
+      archive: 7303e472a38ed63345da17769bc166db8648a40a88dc0b54a7aa0d5d98c32c92
+      binary: 7303e472a38ed63345da17769bc166db8648a40a88dc0b54a7aa0d5d98c32c92
+    tailwindcss-linux-x64:
+      archive: cd52e757cb0bd15238f0207a215198d924811234028d056b7be39fde70491296
+      binary: cd52e757cb0bd15238f0207a215198d924811234028d056b7be39fde70491296
+    tailwindcss-macos-arm64:
+      archive: 0661a3315d3515b8dab2d2ab86a477f417a358ce8a196afe9baea170e4c5cfdc
+      binary: 0661a3315d3515b8dab2d2ab86a477f417a358ce8a196afe9baea170e4c5cfdc
+    tailwindcss-macos-x64:
+      archive: febf92682ba974ce588b7012f39897534abbc6d6c12f6ef02e0c4f790d36ac0b
+      binary: febf92682ba974ce588b7012f39897534abbc6d6c12f6ef02e0c4f790d36ac0b
+  name: tailwindcss
+  overlay:
+    Arch:
+      amd64: x64
+    OS:
+      darwin: macos
+  paths:
+    base: https://github.com/tailwindlabs/tailwindcss/releases/download/v{{ .Version }}/
+    checksums:
+      artifact: https://checksums.bindl.dev/tailwindcss/v{{ .Version }}.txt
+    target: '{{.Name}}-{{.OS}}-{{.Arch}}'
+  version: 3.2.4
