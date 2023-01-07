@@ -20,3 +20,17 @@ programs:
       target: "{{.Name}}-{{.OS}}-{{.Arch}}"
       checksums:
         artifact: "https://checksums.bindl.dev/tailwindcss/v{{ .Version }}.txt"
+  - name: ko
+    version: 0.12.0
+    provider: github
+    overlay:
+      OS:
+        linux: Linux
+        darwin: Darwin
+      Arch:
+        amd64: x86_64
+    paths:
+      base: ko-build/ko
+      target: '{{ .Name }}_{{ .Version }}_{{ .OS }}_{{ .Arch }}.tar.gz'
+      checksums:
+        artifact: checksums.txt

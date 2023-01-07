@@ -1,5 +1,31 @@
 programs:
 - checksums:
+    ko_0.12.0_Darwin_arm64.tar.gz:
+      archive: cfef98db8ad0e1edaa483fa5c6af89eb573a8434abd372b510b89005575de702
+      binary: 58d9aafa583d3017401907e3d3e8995d76f1cbde2f92eb202e24136ac081254f
+    ko_0.12.0_Darwin_x86_64.tar.gz:
+      archive: 8679d0d74fc75f24e044649c6a961dad0a3ef03bedbdece35e2f3f29eb7876af
+      binary: 2c8b864e55cfba035fe625e87a03fd75bd073deb3f05f5ec5d9f4af278e9f514
+    ko_0.12.0_Linux_arm64.tar.gz:
+      archive: 48d6940bac2a94783137295c109dbba925f84f3855a5ad6a43b23443a4d59635
+      binary: c94f748f5f92a9e326b4c3b27ddbe27083ceca66697199cfac9764d7181d1807
+    ko_0.12.0_Linux_x86_64.tar.gz:
+      archive: 05aa77182fa7c55386bd2a210fd41298542726f33bbfc9c549add3a66f7b90ad
+      binary: cce6f2d42701df8401262329b1fe392e64ed7fd97e4b7a70e08fc4ea8d986431
+  name: ko
+  overlay:
+    Arch:
+      amd64: x86_64
+    OS:
+      darwin: Darwin
+      linux: Linux
+  paths:
+    base: https://github.com/ko-build/ko/releases/download/v{{ .Version }}/
+    checksums:
+      artifact: https://github.com/ko-build/ko/releases/download/v{{ .Version }}/checksums.txt
+    target: '{{ .Name }}_{{ .Version }}_{{ .OS }}_{{ .Arch }}.tar.gz'
+  version: 0.12.0
+- checksums:
     tailwindcss-linux-arm64:
       archive: 7303e472a38ed63345da17769bc166db8648a40a88dc0b54a7aa0d5d98c32c92
       binary: 7303e472a38ed63345da17769bc166db8648a40a88dc0b54a7aa0d5d98c32c92
