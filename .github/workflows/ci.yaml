@@ -1,4 +1,4 @@
-name: Publish
+name: CI
 
 on:
   push:
@@ -23,7 +23,12 @@ jobs:
         with:
           install-dir: bin
 
-      - run: make ko/auth
+      - name: Authenticate ko
+        shell: bash
+        run: |
+          set -ex
+          make bin/ko
+          echo "${{ github.token }}" | bin/ko login ghcr.io --username "${{ github.actor }}" --password-stdin
 
       - run: make ko/publish
         if: ${{ github.ref_type != 'tag' }}
