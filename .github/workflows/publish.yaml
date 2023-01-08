@@ -5,6 +5,9 @@ on:
     branches: ['main']
     tags: ['v*']
 
+env:
+  KO_DOCKER_REPO: ghcr.io/wilsonehusin
+
 jobs:
   publish:
     name: Publish
@@ -13,16 +16,17 @@ jobs:
       - uses: actions/setup-go@v2
         with:
           go-version: 1.19
+
       - uses: actions/checkout@v2
 
-      - uses: imjasonh/setup-ko@v0.6
-        env:
-          # Required, otherwise the repo name will be included,
-          # resulting in duplication.
-          KO_DOCKER_REPO: ghcr.io/wilsonehusin
+      - uses: bindl-dev/bindl@main
+        with:
+          install-dir: bin
 
-      - run: ko build --base-import-paths
+      - run: make ko/auth
+
+      - run: make ko/publish
         if: ${{ github.ref_type != 'tag' }}
 
-      - run: ko build --base-import-paths --tags ${{ github.ref_name }}
+      - run: make ko/release TAG=${{ github.ref_name }}
         if: ${{ github.ref_type == 'tag' }}
