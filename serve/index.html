@@ -49,12 +49,12 @@
             class="flex-grow py-8"
             >
             <div
-                class="mx-auto max-w-2xl flex flex-wrap justify-evenly gap-4"
+                class="mx-auto max-w-2xl grid grid-cols-1 md:max-w-3xl md:grid-cols-2 lg:max-w-4xl lg:grid-cols-3 px-8 justify-evenly gap-4"
                 >
                 <template x-for="target in data.targets">
                   <a
                       x-bind:href="'https://' + target.host + target.path"
-                      class="p-4 rounded-lg bg-stone-800 capitalize"
+                      class="p-4 rounded-lg bg-stone-800 capitalize text-center"
                       >
                       <span
                           x-text="target.name.replace(/-/, ' ')"

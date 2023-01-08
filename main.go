@@ -19,7 +19,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-//go:embed serve/index.html serve/app.css
+//go:embed serve/index.html serve/*.css
 var staticFS embed.FS
 var devMode = os.Getenv("DEV_MODE") != ""
 
