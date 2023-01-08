@@ -19,7 +19,7 @@ programs:
       base: tailwindlabs/tailwindcss
       target: "{{.Name}}-{{.OS}}-{{.Arch}}"
       checksums:
-        artifact: "https://checksums.bindl.dev/tailwindcss/v{{.Version}}.txt"
+        artifact: "https://checksums.bindl.dev/{{.Name}}/v{{.Version}}.txt"
   - name: ko
     version: 0.12.0
     provider: github
@@ -42,3 +42,14 @@ programs:
       target: "{{.Name}}-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
       checksums:
         artifact: "{{.Name}}-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz.sha256sum"
+  - name: hivemind
+    version: 1.1.0
+    provider: github
+    overlay:
+      OS:
+        darwin: macos
+    paths:
+      base: DarthSim/hivemind
+      target: "{{.Name}}-v{{.Version}}-{{.OS}}-{{.Arch}}.gz"
+      checksums:
+        artifact: "https://checksums.bindl.dev/{{.Name}}/v{{.Version}}.txt"

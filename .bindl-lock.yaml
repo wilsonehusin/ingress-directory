@@ -20,6 +20,29 @@ programs:
     target: '{{.Name}}-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz'
   version: 3.10.3
 - checksums:
+    hivemind-v1.1.0-linux-amd64.gz:
+      archive: 809ca1c5fedbbfca8fdfb3a4b9bb9c41868b046f35f85a3e893ccf2583a3921a
+      binary: cb97a33ec1cd5e38b688437caeab9812c05a8892eea09ed1dfde1d07efa4426c
+    hivemind-v1.1.0-linux-arm64.gz:
+      archive: e4e0b7809bc5a24a61500e11695aa754fc681f19d5d7ba4aeb5f5f1556d69360
+      binary: 1e446614fb5d1a32beca17f02118cbcf1efc1c1a40b7388c8fca023488c40a1a
+    hivemind-v1.1.0-macos-amd64.gz:
+      archive: fff11e7b3e5d596a0866e7b9f6540dc40cb900125fe45ae855173481de6390c3
+      binary: c78e023bb0feef5a676567755e58794ca807fb7a94a334578bd1c48108416857
+    hivemind-v1.1.0-macos-arm64.gz:
+      archive: 4286e8eb2f0edd3ded654aee1a0f6c330915c9cfb5926d9ab238102086045fd4
+      binary: 52c402de23b7a0e3764279423f249d3458c40e7a403a771182ffead2dbe353ea
+  name: hivemind
+  overlay:
+    OS:
+      darwin: macos
+  paths:
+    base: https://github.com/DarthSim/hivemind/releases/download/v{{ .Version }}/
+    checksums:
+      artifact: https://checksums.bindl.dev/{{.Name}}/v{{.Version}}.txt
+    target: '{{.Name}}-v{{.Version}}-{{.OS}}-{{.Arch}}.gz'
+  version: 1.1.0
+- checksums:
     ko_0.12.0_Darwin_arm64.tar.gz:
       archive: cfef98db8ad0e1edaa483fa5c6af89eb573a8434abd372b510b89005575de702
       binary: 58d9aafa583d3017401907e3d3e8995d76f1cbde2f92eb202e24136ac081254f
@@ -67,6 +90,6 @@ programs:
   paths:
     base: https://github.com/tailwindlabs/tailwindcss/releases/download/v{{ .Version }}/
     checksums:
-      artifact: https://checksums.bindl.dev/tailwindcss/v{{.Version}}.txt
+      artifact: https://checksums.bindl.dev/{{.Name}}/v{{.Version}}.txt
     target: '{{.Name}}-{{.OS}}-{{.Arch}}'
   version: 3.2.4
