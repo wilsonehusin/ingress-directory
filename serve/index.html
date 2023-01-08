@@ -33,7 +33,7 @@
           <div
               class="flex justify-between items-center p-4 w-full mx-auto max-w-3xl"
               >
-              <h1 class="text-lg">🌐 Ingress Directory</h1>
+              <h1 class="text-lg font-bold">🌐 Ingress Directory</h1>
               <button
                   x-on:click="data = await fetchData()"
                   class="px-2 py-1 rounded-lg border-2 border-stone-600 bg-stone-900"
@@ -67,7 +67,7 @@
         <h3
             class="px-2 py-1 m-4"
             >
-            Last updated <relative-time
+            Last updated: <relative-time
                              x-bind:datetime="data.last_updated"
                              ></relative-time>
         </h3>
