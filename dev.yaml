@@ -51,6 +51,9 @@ spec:
           image: ko://go.husin.dev/ingress-directory
           ports:
             - containerPort: 8080
+          env:
+            - name: DEV_MODE
+              value: "1"
 ---
 apiVersion: v1
 kind: Service

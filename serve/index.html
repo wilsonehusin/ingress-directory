@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ingress Directory</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link
+        rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>"
+        />
+
+        <link rel="preload" href="/app.css" as="style" />
+        <link rel="preload" crossorigin="anonymous" href="//unpkg.com/@github/relative-time-element@4.x.x/dist/bundle.js" as="script" />
+        <link rel="preload" href="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" as="script" />
+
+        <script defer src="//unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script>
+          async function fetchData() {
+            return await(await fetch ('/api')).json()
+          }
+        </script>
+        <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body
+      x-data="{data: { targets: [], last_updated: 0 }}"
+      x-init="data = await fetchData()"
+      class="min-h-screen flex flex-col bg-black text-white"
+      >
+      <nav
+          class="flex-shrink bg-stone-900"
+          >
+          <div
+              class="flex justify-between items-center p-4 w-full mx-auto max-w-3xl"
+              >
+              <h1 class="text-lg">🌐 Ingress Directory</h1>
+              <button
+                  x-on:click="data = await fetchData()"
+                  class="px-2 py-1 rounded-lg border-2 border-stone-600 bg-stone-900"
+                  >
+                  Refresh
+              </button>
+          </div>
+      </nav>
+    <main
+        class="flex-grow flex flex-col"
+        >
+        <div
+            class="flex-grow py-8"
+            >
+            <div
+                class="mx-auto max-w-2xl flex flex-wrap justify-evenly gap-4"
+                >
+                <template x-for="target in data.targets">
+                  <a
+                      x-bind:href="'https://' + target.host + target.path"
+                      class="p-4 rounded-lg bg-stone-800 capitalize"
+                      >
+                      <span
+                          x-text="target.name.replace(/-/, ' ')"
+                          ></span>
+                  </a>
+                </template>
+            </div>
+        </div>
+      <div class="mx-auto">
+        <h3
+            class="px-2 py-1 m-4"
+            >
+            Last updated <relative-time
+                             x-bind:datetime="data.last_updated"
+                             ></relative-time>
+        </h3>
+      </div>
+    </main>
+
+    <script defer type="module" src="//unpkg.com/@github/relative-time-element@4.x.x/dist/bundle.js"></script>
+  </body>
+</html>

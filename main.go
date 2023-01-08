@@ -2,22 +2,26 @@ package main
 
 import (
 	"context"
-	_ "embed"
+	"embed"
 	"encoding/json"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"sync"
 	"time"
 
 	meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
 )
 
-//go:embed index.html
-var htmlPage []byte
+//go:embed serve/index.html serve/app.css
+var staticFS embed.FS
+var devMode = os.Getenv("DEV_MODE") != ""
 
 func main() {
 	if err := run(); err != nil {
@@ -26,9 +30,23 @@ func main() {
 }
 
 func run() error {
-	config, err := rest.InClusterConfig()
-	if err != nil {
-		panic(err.Error())
+	var config *rest.Config
+	if devMode {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			panic(err.Error())
+		}
+		c, err := clientcmd.BuildConfigFromFlags("", filepath.Join(home, ".kube", "config"))
+		if err != nil {
+			panic(err.Error())
+		}
+		config = c
+	} else {
+		c, err := rest.InClusterConfig()
+		if err != nil {
+			panic(err.Error())
+		}
+		config = c
 	}
 
 	clientset, err := kubernetes.NewForConfig(config)
@@ -46,17 +64,23 @@ func run() error {
 
 	var wg sync.WaitGroup
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		_, err := w.Write(htmlPage)
-		if err != nil {
-			log.Printf("error: serving html: %v", err)
-		}
-	})
 	mux.HandleFunc("/api", func(w http.ResponseWriter, req *http.Request) {
+		log.Printf("/api")
 		if err := json.NewEncoder(w).Encode(id); err != nil {
 			log.Printf("error: generating json: %v", err)
 		}
 	})
+	var serveFS http.FileSystem
+	if devMode {
+		serveFS = http.Dir("./serve")
+	} else {
+		sub, err := fs.Sub(staticFS, "serve")
+		if err != nil {
+			panic(err.Error())
+		}
+		serveFS = http.FS(sub)
+	}
+	mux.Handle("/", http.FileServer(serveFS))
 	srv := &http.Server{
 		Addr:    ":8080",
 		Handler: mux,
@@ -64,6 +88,7 @@ func run() error {
 
 	wg.Add(1)
 	go func() {
+		id.Update(ctx)
 		log.Fatal(srv.ListenAndServe())
 		wg.Done()
 	}()
@@ -94,7 +119,7 @@ func run() error {
 
 type IngressDirectory struct {
 	Targets     []IngressDirectoryTarget `json:"targets"`
-	LastUpdated int64                    `json:"last_updated"`
+	LastUpdated string                   `json:"last_updated"`
 
 	clientset *kubernetes.Clientset
 }
@@ -122,7 +147,7 @@ func (id *IngressDirectory) Update(ctx context.Context) {
 			}
 		}
 		id.Targets = targets
-		id.LastUpdated = time.Now().Unix()
+		id.LastUpdated = time.Now().In(time.UTC).Format(time.RFC3339)
 	}
 }
 

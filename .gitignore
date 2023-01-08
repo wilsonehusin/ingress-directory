@@ -1,2 +1,5 @@
 bin/*
 !bin/.keep
+
+# TailwindCSS output
+kodata/app.css
