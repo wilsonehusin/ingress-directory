@@ -54,7 +54,7 @@
                 <template x-for="target in data.targets">
                   <a
                       x-bind:href="'https://' + target.host + target.path"
-                      class="p-4 rounded-lg bg-stone-800 capitalize text-center"
+                      class="p-4 rounded-lg bg-stone-800 text-sm font-semibold uppercase text-center"
                       >
                       <span
                           x-text="target.name.replace(/-/, ' ')"
